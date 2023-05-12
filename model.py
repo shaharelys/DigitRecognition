@@ -11,7 +11,7 @@ from constants import BATCH_SIZE, EPOCHS, LEARNING_RATE
 
 # Setting device on GPU if available, else CPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print(f'torch is using {device} as device')
+# print(f'torch is using {device} as device')
 
 class Net(nn.Module):
     def __init__(self):

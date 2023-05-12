@@ -3,6 +3,7 @@ import numpy as np
 from typing import Tuple
 from constants import IMG_SIZE
 
+
 def load_dataset(path: str) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Loads the MNIST dataset from the given path.
@@ -22,9 +23,9 @@ def load_dataset(path: str) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndar
     test_labels_path = os.path.join(path, 't10k-labels.idx1-ubyte')
 
     # Set np arrays. Indexing is to skip file headers
-    train_images = np.fromfile(train_images_path, dtype=np.uint8)[16:].reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+    train_images = np.fromfile(train_images_path, dtype=np.uint8)[16:].reshape(-1, 1, IMG_SIZE, IMG_SIZE)
     train_labels = np.fromfile(train_labels_path, dtype=np.uint8)[8:]
-    test_images = np.fromfile(test_images_path, dtype=np.uint8)[16:].reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+    test_images = np.fromfile(test_images_path, dtype=np.uint8)[16:].reshape(-1, 1, IMG_SIZE, IMG_SIZE)
     test_labels = np.fromfile(test_labels_path, dtype=np.uint8)[8:]
 
     return train_images, train_labels, test_images, test_labels
