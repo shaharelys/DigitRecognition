@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from data_preprocessing import load_dataset, preprocess_images
 from config import DATA_PATH, MODEL_PATH
 from constants import BATCH_SIZE, EPOCHS, LEARNING_RATE
+import evaluate
 
 # Setting device on GPU if available, else CPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -68,8 +69,6 @@ def train_model() -> None:
 
     for epoch in range(EPOCHS):
         for i, batch in enumerate(train_loader):
-            print(
-                f'Running batch #{i}, epoch #{epoch + 1} | {("{:.2f}".format(float(i * BATCH_SIZE)*100 / 60000))}%')
             images, labels = batch
             images = images.to(device)
             labels = labels.to(device)
@@ -91,3 +90,4 @@ def train_model() -> None:
 
 if __name__ == "__main__":
     train_model()
+    evaluate.evaluate_model()
