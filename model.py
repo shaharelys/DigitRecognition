@@ -1,17 +1,18 @@
 # model.py
 
 import torch
+import os
 from torch import nn
 from torch.optim import Adam
 from torch.utils.data import DataLoader, TensorDataset
 from data_preprocessing import load_dataset, preprocess_images
 from config import DATA_PATH, MODEL_PATH
-from constants import BATCH_SIZE, EPOCHS, LEARNING_RATE
+from constants import BATCH_SIZE, EPOCHS, LEARNING_RATE, TRAIN_ITER
 import evaluate
 
 # Setting device on GPU if available, else CPU
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# print(f'torch is using {device} as device')
+
 
 class Net(nn.Module):
     def __init__(self):
@@ -57,16 +58,20 @@ def train_model() -> None:
     train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=True)
 
-    # Create the model
-    model = Net().to(device)
+    # Check if a model already exists
+    if os.path.isfile(MODEL_PATH):
+        # Load the existing model
+        model = Net().to(device)
+        model.load_state_dict(torch.load(MODEL_PATH))
+    else:
+        # Create a new model
+        model = Net().to(device)
 
     # Define the optimizer and loss function
     optimizer = Adam(model.parameters(), lr=LEARNING_RATE)
     loss_fn = nn.CrossEntropyLoss()
 
     # Train the model
-    model.train()
-
     for epoch in range(EPOCHS):
         for i, batch in enumerate(train_loader):
             images, labels = batch
@@ -89,5 +94,7 @@ def train_model() -> None:
 
 
 if __name__ == "__main__":
-    train_model()
-    evaluate.evaluate_model()
+    for i in range(TRAIN_ITER):
+        print(f'Train iteration #{i}:')
+        train_model()
+        evaluate.evaluate_model()
