@@ -5,7 +5,6 @@ from torch import nn
 from torch.optim import Adam
 from torch.utils.data import DataLoader, TensorDataset
 from data_preprocessing import load_dataset, preprocess_images
-from sklearn.model_selection import train_test_split
 from config import DATA_PATH, MODEL_PATH
 from constants import BATCH_SIZE, EPOCHS, LEARNING_RATE
 
